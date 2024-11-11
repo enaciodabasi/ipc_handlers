@@ -56,6 +56,9 @@ private:
   }
 
 public:
+  using SharedPtr = std::shared_ptr<SharedMemoryHandler<Data, NumData>>;
+  using UniquePtr = std::unique_ptr<SharedMemoryHandler<Data, NumData>>;
+
   SharedMemoryHandler(SharedMemoryHandler&& other) noexcept
     : m_Mode(other.m_Mode)
     , m_SegmentName(std::move(other.m_SegmentName))
@@ -125,6 +128,29 @@ public:
     }
 
     close(m_SharedMemoryFileDescriptor);
+  }
+
+  static std::shared_ptr<SharedMemoryHandler<Data, NumData>>
+  createShared(std::string_view segment_name, std::string_view semaphore_name = std::string_view(), Mode mode = Mode::CREATE)
+  {
+    std::expected<SharedMemoryHandler<Data, NumData>, Error> result = create(segment_name, semaphore_name, mode);
+    if (result.has_value())
+    {
+      return std::make_shared<SharedMemoryHandler<Data, NumData>>(std::move(result.value()));
+    }
+    return nullptr;
+  }
+
+  static std::unique_ptr<SharedMemoryHandler<Data, NumData>> createUnique(
+      std::string_view segment_name, std::string_view semaphore_name = std::string_view(), Mode mode = Mode::CREATE)
+  {
+    std::expected<SharedMemoryHandler<Data, NumData>, Error> result = create(segment_name, semaphore_name, mode);
+    if (result.has_value())
+    {
+      return std::make_unique<SharedMemoryHandler<Data, NumData>>(std::move(result.value()));
+    }
+
+    return nullptr;
   }
 
   static std::expected<SharedMemoryHandler<Data, NumData>, Error>

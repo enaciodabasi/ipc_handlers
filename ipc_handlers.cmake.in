@@ -3,9 +3,9 @@ set(ipc_handlers 1.0.0)
 
 @PACKAGE_INIT@
 
-set_and_check(ipc_handlers_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR@")
-set_and_check(ipc_handlers_LIB_INSTALL_DIR "@PACKAGE_LIB_INSTALL_DIR@")
-set_and_check(ipc_handlers_LIBRARIES "@PACKAGE_LIBS@")
+set_and_check(ipc_handlers_INCLUDE_DIRS "@PACKAGE_INCLUDE_INSTALL_DIR@")
+set_and_check(ipc_handlers_LIBRARIES "@PACKAGE_LIB_INSTALL_DIR@")
+
 
 check_required_components(ipc_handlers)
 
