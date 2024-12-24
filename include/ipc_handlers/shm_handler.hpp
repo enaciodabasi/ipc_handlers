@@ -21,14 +21,10 @@
 
 #include "timespec_chrono_conversions/timespec_chrono_conversions.hpp"
 
+#include "ipc_handlers/common.hpp"
+
 namespace shm_handler
 {
-
-enum class Mode
-{
-  CREATE,
-  OPEN
-};
 
 enum class Error : int
 {
@@ -156,6 +152,8 @@ public:
   static std::expected<SharedMemoryHandler<Data, NumData>, Error>
   create(std::string_view segment_name, std::string_view semaphore_name = std::string_view(), Mode mode = Mode::CREATE)
   {
+
+    
     static SharedMemoryHandler<Data, NumData> shm_handler;
     shm_handler.m_Mode = mode;
     if (segment_name.empty())

@@ -25,6 +25,7 @@ find_package(timespec_chrono_conversions REQUIRED)
 
 set(SOURCES
   src/shm_handler.cpp
+  src/tcp_client_template.cpp
 )
 
 add_library(

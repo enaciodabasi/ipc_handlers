@@ -25,7 +25,7 @@ void signal_handler(int signal)
 int main(int argc, char** argv)
 {
   
-  std::expected<shm_handler::SharedMemoryHandler<int, 1>, shm_handler::Error> result = shm_handler::SharedMemoryHandler<int, 1>::create("/TEST_SEGMENT", "/test_semaphore", shm_handler::Mode::CREATE);
+  std::expected<shm_handler::SharedMemoryHandler<int, 1>, shm_handler::Error> result = shm_handler::SharedMemoryHandler<int, 1>::create("/TEST_SEGMENT", "/test_semaphore", Mode::CREATE);
   if(!result.has_value())
   {
     std::cout << "Could not create Shared Memory Handler: " << shm_handler::ErrorMap.at(result.error()) << std::endl;
