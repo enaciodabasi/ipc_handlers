@@ -27,7 +27,8 @@ std::expected<TcpClient, ErrorCode> TcpClient::create(
   }
 
   for(addrinfo* foundAddr = servAddr; foundAddr != nullptr; foundAddr = foundAddr->ai_next)
-  {
+  { 
+    std::cout << "Found candidate address" << std::endl;
     client.m_SocketFileDescriptor = socket(foundAddr->ai_family, foundAddr->ai_socktype, foundAddr->ai_protocol);
     if(client.m_SocketFileDescriptor < 0)
     {
@@ -36,16 +37,16 @@ std::expected<TcpClient, ErrorCode> TcpClient::create(
 
     if(connect(client.m_SocketFileDescriptor, foundAddr->ai_addr, foundAddr->ai_addrlen) == 0)
     {
+      
       break;
     }
-
-    close(client.m_SocketFileDescriptor);
     client.m_SocketFileDescriptor = -1;
+
   }
 
-  freeaddrinfo(servAddr);
   if(client.m_SocketFileDescriptor == -1)
   {
+    std::cout << "Socket creation failed with errno: " << strerror(errno) << std::endl;
     return std::unexpected(ErrorCode::SOCKET_CREATION_FAILED);
   }
 

@@ -16,12 +16,13 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <unistd.h>
+#include <map>
 #include <string.h>
+#include <iostream>
 
 #include <string_view>
 #include <string>
 #include <expected>
-
 #include <ipc_handlers/common.hpp>
 
 namespace tcp_client {
@@ -36,6 +37,16 @@ enum class ErrorCode
   SOCKET_SEND_FAILED,
   SOCKET_RECEIVE_FAILED
 };
+
+inline const std::map<ErrorCode, std::string> ErrorCodeDescriptions = {
+  {ErrorCode::SUCCESS, "Success"},
+  {ErrorCode::SOCKET_SEARCH_FAILED, "Socket search failed"},
+  {ErrorCode::SOCKET_CREATION_FAILED, "Socket creation failed"},
+  {ErrorCode::SOCKET_CONNECTION_FAILED, "Socket connection failed"},
+  {ErrorCode::SOCKET_SEND_FAILED, "Socket send failed"},
+  {ErrorCode::SOCKET_RECEIVE_FAILED, "Socket receive failed"}
+};
+
 
 class TcpClient
 {
@@ -59,14 +70,14 @@ class TcpClient
   );
 
   template<typename T>
-  ErrorCode sendData(const T& data) const
+  ErrorCode sendData(const T& data, std::size_t length) const
   {
     if(!isConnected())
     {
       return ErrorCode::SOCKET_CONNECTION_FAILED;
     }
     
-    if(send(m_SocketFileDescriptor, &data, sizeof(T), 0) != sizeof(T))
+    if(send(m_SocketFileDescriptor, &data, length, 0) != length)
     {
       return ErrorCode::SOCKET_SEND_FAILED;
     }
