@@ -63,7 +63,7 @@ class TcpClient
   {
     if(!isConnected())
     {
-      return std::unexpected(ErrorCode::SOCKET_CONNECTION_FAILED);
+      return ErrorCode::SOCKET_CONNECTION_FAILED;
     }
     
     if(send(m_SocketFileDescriptor, &data, sizeof(T), 0) != sizeof(T))
