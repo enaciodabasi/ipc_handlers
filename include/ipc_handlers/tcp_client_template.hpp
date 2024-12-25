@@ -77,7 +77,7 @@ class TcpClient
       return ErrorCode::SOCKET_CONNECTION_FAILED;
     }
     
-    if(send(m_SocketFileDescriptor, &data, length, 0) != length)
+    if(send(m_SocketFileDescriptor, data, length, 0) != length)
     {
       return ErrorCode::SOCKET_SEND_FAILED;
     }
